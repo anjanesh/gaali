@@ -1,0 +1,13 @@
+table.tbl-toxicity
+{    
+    margin:15px 0;
+}
+th.true, td.true
+{
+    color: red;
+    font-weight:bold;
+}
+th.false, td.false
+{
+    color: green;
+}
