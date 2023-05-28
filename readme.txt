@@ -48,8 +48,6 @@ Even then that's okay and I can fund that minimum amount, but if it goes beyong 
 = 0.5 =
 * Just started, will update when I come across issues.
 
-Ordered list:
-
 1. Comment check runs in the background
 1. Neat table in comment's admin showcasing 6 toxic parameters and a master parameter Toxicity that will decide if the comment should be auto-approved or not
 1. API Key not required for now, but will incorporate this if there are many users of this plugin and the usage is high
