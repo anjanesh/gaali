@@ -5,8 +5,10 @@ Version: 1.0
 Plugin URI: https://gaali.in
 Description: Toxicity detect for Comments
 Author: Anjanesh Lekshminarayanan
-Author URI: http://anjanesh.consulting
+Author URI: https://anjanesh.consulting
 */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly 
 
 const BOOLEANS = ['false', 'true'];
 const BOOLEANS_YN = ['No', 'Yes'];
@@ -61,21 +63,24 @@ function toxicity_plugin_add_settings_page()
 add_action('admin_menu', 'toxicity_plugin_add_settings_page');
 
 # Comment Post
-add_action('comment_post', 'schedule_toxicity_check', 10, 2);
-function schedule_toxicity_check($comment_id, $comment_approved)
+add_action('comment_post', 'toxicity_schedule_check', 10, 2);
+function toxicity_schedule_check($comment_id, $comment_approved)
 {    
-    # error_log('toxicity_approve_function called with comment ID ' . $comment_id);
-    wp_schedule_single_event(time() + 60, 'toxicity_comment_approve_event', ['comment_id' => $comment_id]);
-    # error_log('Comment with ID ' . $comment_id . ' was posted with status ' . $comment_approved);    
+    error_log('toxicity_approve_function called with comment ID ' . $comment_id);
+    
+    # Run scheduled event in 5 seconds to check for toxicity
+    wp_schedule_single_event(time() + 5, 'toxicity_comment_approve_event', ['comment_id' => $comment_id]);
+    
+    error_log('Comment with ID ' . $comment_id . ' was posted with status ' . $comment_approved);    
 }
 
-add_action('add_meta_boxes_comment', 'extend_comment_add_meta_box_toxicity');
-function extend_comment_add_meta_box_toxicity()
+add_action('add_meta_boxes_comment', 'toxicity_extend_comment_add_meta_box');
+function toxicity_extend_comment_add_meta_box()
 {
-    add_meta_box('title', __( 'Comment Metadata - Toxicity' ), 'extend_comment_meta_box_toxicity', 'comment', 'normal', 'high');
+    add_meta_box('title', __( 'Comment Metadata - Toxicity' ), 'toxicity_extend_comment_meta_box', 'comment', 'normal', 'high');
 }
 
-function extend_comment_meta_box_toxicity($comment)
+function toxicity_extend_comment_meta_box($comment)
 {
     $identity_attack = get_comment_meta($comment->comment_ID, 'identity_attack', true);
     $insult = get_comment_meta($comment->comment_ID, 'insult', true);
@@ -86,7 +91,7 @@ function extend_comment_meta_box_toxicity($comment)
     $toxicity = get_comment_meta($comment->comment_ID, 'toxicity', true);
 
     wp_nonce_field( 'extend_comment_update', 'extend_comment_update', false );
-    ?>
+    ?>    
     <table cellspacing="5">
         <tbody>
         <tr>
@@ -126,9 +131,9 @@ add_filter('comment_text', 'toxicity_data');
 function toxicity_data($text)
 {    
     if (is_admin())
-    {                
+    {        
         if (get_comment_meta(get_comment_ID(), 'toxicity'))
-        {
+        {            
             $identity_attack = intval(get_comment_meta(get_comment_ID(), 'identity_attack', true));    
             $insult = intval(get_comment_meta(get_comment_ID(), 'insult', true));
             $obscene = intval(get_comment_meta(get_comment_ID(), 'obscene', true));

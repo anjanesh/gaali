@@ -42,6 +42,11 @@ Even then that's okay and I can fund that minimum amount, but if it goes beyong 
 = 0.5 =
 * Just started, will update when I come across issues.
 
+## Upgrade Notice
+
+= 1.0 =
+This is the first version.
+
 ## Features
 
 1. Comment check runs in the background

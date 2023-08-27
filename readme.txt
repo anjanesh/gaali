@@ -1,9 +1,10 @@
-=== Plugin Name ===
+=== Gaali ===
 Contributors: anjanesh
 Donate link: https://www.paypal.com/paypalme/anjanesh
 Tags: toxicity, moderation
 Requires at least: 6.2.2
-Tested up to: 6.2.2
+Tested up to: 6.3
+Stable tag: 1.0
 Requires PHP: 8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -52,3 +53,7 @@ Even then that's okay and I can fund that minimum amount, but if it goes beyong 
 1. Neat table in comment's admin showcasing 6 toxic parameters and a master parameter Toxicity that will decide if the comment should be auto-approved or not
 1. API Key not required for now, but will incorporate this if there are many users of this plugin and the usage is high
 
+== Upgrade Notice ==
+
+= 1.0 =
+This is the first version.

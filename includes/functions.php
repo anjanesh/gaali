@@ -1,21 +1,22 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly 
+
 function toxicity_check($comment_id, $comment)
 {
     $api_key = get_option('toxicity_plugin_api_key');
-    $url = "https://api.toxicity.co.in/?sentence=".rawurlencode($comment)."&key=".rawurlencode($api_key);
-    $data = get_file_contents($url, 3);    
+    $url = "https://api.toxicity.co.in/?sentence=".rawurlencode($comment)."&key=".rawurlencode($api_key);        
+    $data = wp_remote_retrieve_body(wp_remote_get($url, ['timeout' => 60]));    
+    $data = json_decode($data);
 
-    if ($data !== FALSE)
+    if ($data != FALSE)
     {
-        $data = json_decode($data);        
-
-        $identity_attack = intval((bool)$data->identity_attack);
-        $insult = intval((bool)$data->insult);
-        $obscene = intval((bool)$data->obscene);
-        $severe_toxicity = intval((bool)$data->severe_toxicity);
-        $sexual_explicit = intval((bool)$data->sexual_explicit);
-        $threat = intval((bool)$data->threat);
-        $toxicity = intval((bool)$data->toxicity);
+        $identity_attack = intval($data->identity_attack);
+        $insult = intval($data->insult);
+        $obscene = intval($data->obscene);
+        $severe_toxicity = intval($data->severe_toxicity);
+        $sexual_explicit = intval($data->sexual_explicit);
+        $threat = intval($data->threat);
+        $toxicity = intval($data->toxicity);        
         
         add_comment_meta($comment_id, 'identity_attack', $identity_attack);
         add_comment_meta($comment_id, 'insult', $insult);
@@ -31,18 +32,5 @@ function toxicity_check($comment_id, $comment)
     {        
         return 0;
     }
-}
-
-function get_file_contents($url, $totalTries = 5)
-{
-    $Tries = 0;
-    do
-        {
-            if ($Tries > 0) sleep(1); # Wait for a sec before retrieving again
-            $contents = @file_get_contents($url);
-            $Tries++;
-        } while ($Tries <= $totalTries && $contents === FALSE);
-        if ($contents == "") $contents = FALSE;
-        return $contents;
 }
 ?>
