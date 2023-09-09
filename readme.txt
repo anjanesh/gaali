@@ -56,4 +56,5 @@ Even then that's okay and I can fund that minimum amount, but if it goes beyong 
 == Upgrade Notice ==
 
 = 1.0 =
+
 This is the first version.

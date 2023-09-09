@@ -66,12 +66,12 @@ add_action('admin_menu', 'toxicity_plugin_add_settings_page');
 add_action('comment_post', 'toxicity_schedule_check', 10, 2);
 function toxicity_schedule_check($comment_id, $comment_approved)
 {    
-    error_log('toxicity_approve_function called with comment ID ' . $comment_id);
+    # error_log('toxicity_approve_function called with comment ID ' . $comment_id);
     
     # Run scheduled event in 5 seconds to check for toxicity
     wp_schedule_single_event(time() + 5, 'toxicity_comment_approve_event', ['comment_id' => $comment_id]);
     
-    error_log('Comment with ID ' . $comment_id . ' was posted with status ' . $comment_approved);    
+    # error_log('Comment with ID ' . $comment_id . ' was posted with status ' . $comment_approved);    
 }
 
 add_action('add_meta_boxes_comment', 'toxicity_extend_comment_add_meta_box');
@@ -95,31 +95,31 @@ function toxicity_extend_comment_meta_box($comment)
     <table cellspacing="5">
         <tbody>
         <tr>
-            <th style="text-align:left"><?php _e( 'Identity Attack' ); ?></th>
+            <th style="text-align:left"><?php esc_html_e('Identity Attack'); ?></th>
             <td><?php echo esc_attr($identity_attack); ?></td>
         </tr>
         <tr>
-            <th style="text-align:left"><?php _e( 'Insult' ); ?></th>
+            <th style="text-align:left"><?php esc_html_e('Insult'); ?></th>
             <td><?php echo esc_attr($insult); ?></td>
         </tr>
         <tr>
-            <th style="text-align:left"><?php _e( 'Obscene' ); ?></th>
+            <th style="text-align:left"><?php esc_html_e('Obscene'); ?></th>
             <td><?php echo esc_attr($obscene); ?></td>
         </tr>
         <tr>
-            <th style="text-align:left"><?php _e( 'Severe Toxicity' ); ?></th>
+            <th style="text-align:left"><?php esc_html_e('Severe Toxicity'); ?></th>
             <td><?php echo esc_attr($severe_toxicity); ?></td>
         </tr>
         <tr>
-            <th style="text-align:left"><?php _e( 'Sexual Explicit' ); ?></th>
+            <th style="text-align:left"><?php esc_html_e('Sexual Explicit'); ?></th>
             <td><?php echo esc_attr($sexual_explicit); ?></td>
         </tr>
         <tr>
-            <th style="text-align:left"><?php _e( 'Threat' ); ?></th>
+            <th style="text-align:left"><?php esc_html_e('Threat'); ?></th>
             <td><?php echo esc_attr($threat); ?></td>
         </tr>
         <tr>
-            <th style="text-align:left"><?php _e( 'Toxicity' ); ?></th>
+            <th style="text-align:left"><?php esc_html_e('Toxicity'); ?></th>
             <td><?php echo esc_attr($toxicity); ?></td>
         </tr>
         </tbody>
@@ -170,7 +170,7 @@ function toxicity_approve_function($comment_id)
 {
     $comment = get_comment($comment_id);
     
-    error_log('toxicity_approve_function called with comment ID ' . $comment_id);
+    # error_log('toxicity_approve_function called with comment ID ' . $comment_id);
     
     // Run your machine learning code to check the validity of the comment
     $is_valid = toxicity_check($comment_id, $comment->comment_content);
